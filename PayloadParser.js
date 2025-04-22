@@ -1,31 +1,33 @@
 function parseUplink(device, payload) {
     var payloadb = payload.asBytes();
-    var decoded = Decoder(payloadb, payload.port)
-    env.log(decoded);
-
+  
+    var decoded = Decoder(payloadb, 6);
+ 
     // Store Current 1
     if (decoded.currentma1 != null) {
         var c1 = device.endpoints.byAddress("1");
 
         if (c1 != null)
-            c1.UpdateCurrentSensorStatus(decoded.currentma1);
+            c1.UpdateCurrentSensorStatus(decoded.currentma1 / 1000);
 
         // Store Current 2
         if (decoded.currentma2 != null) {
             var c2 = device.endpoints.byAddress("2");
 
             if (c2 != null)
-                c2.UpdateCurrentSensorStatus(decoded.currentma2);
+                c2.UpdateCurrentSensorStatus(decoded.currentma2 / 1000);
 
             // Store Current 3
             if (decoded.currentma3 != null) {
                 var c3 = device.endpoints.byAddress("3");
 
                 if (c3 != null)
-                    c3.UpdateCurrentSensorStatus(decoded.currentma3);
+                    c3.UpdateCurrentSensorStatus(decoded.currentma3 / 1000);
 
             }
         }
+    }
+}
 
 
         function Decoder(bytes, fport) {
@@ -97,7 +99,3 @@ function parseUplink(device, payload) {
             return sign * significand * Math.pow(2, exponent);
         }
 
-
-    }
-
-}
